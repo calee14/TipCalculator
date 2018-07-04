@@ -26,16 +26,49 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var resetButton: UIButton!
     
+    var isDefaultStatusBar = true
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return isDefaultStatusBar ? .default : .lightContent
+    }
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setTheme(isDark: false)
         billAmountTextField.calculateButtonAction = {
             self.calculate()
         }
     }
-    
+    func setTheme(isDark: Bool) {
+        let theme = isDark ? ColorTheme.dark : ColorTheme.light
+        
+        view.backgroundColor = theme.viewControllerBackgroundColor
+        
+        headerView.backgroundColor = theme.primaryColor
+        titleLabel.textColor = theme.primaryTextColor
+        
+        inputCard.backgroundColor = theme.secondaryColor
+        
+        billAmountTextField.tintColor = theme.accentColor
+        tipPercentSegmentControl.tintColor = theme.accentColor
+        
+        outputCardView.backgroundColor = theme.primaryColor
+        outputCardView.layer.borderColor = theme.accentColor.cgColor
+        
+        tipAmountTitleLabel.textColor = theme.primaryTextColor
+        totalAmountTitleLabel.textColor = theme.primaryTextColor
+        
+        tipAmountLabel.textColor = theme.outputTextColor
+        totalAmountLabel.textColor = theme.outputTextColor
+        
+        resetButton.backgroundColor = theme.secondaryColor
+        
+        isDefaultStatusBar = theme.isDefaultStatusBar
+        setNeedsStatusBarAppearanceUpdate()
+    }
     func setupViews() {
         headerView.layer.shadowOffset = CGSize(width: 0, height: 1)
         headerView.layer.shadowOpacity = 0.07
@@ -97,11 +130,7 @@ class ViewController: UIViewController {
         self.totalAmountLabel.text = "$0.00"
     }
     @IBAction func themeToggled(_ sender: UISwitch) {
-        if sender.isOn {
-            print("switch is on")
-        } else {
-            print("switch is off")
-        }
+        setTheme(isDark: sender.isOn)
     }
     @IBAction func tipPercentChanged(_ sender: UISegmentedControl) {
         calculate()
