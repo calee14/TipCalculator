@@ -30,11 +30,31 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
         billAmountTextField.calculateButtonAction = {
             self.calculate()
         }
     }
     
+    func setupViews() {
+        headerView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowColor = UIColor.black.cgColor
+        headerView.layer.shadowRadius = 35
+        
+        inputCard.layer.cornerRadius = 8
+        inputCard.layer.masksToBounds = true
+        
+        outputCardView.layer.cornerRadius = 8
+        outputCardView.layer.masksToBounds = true
+        
+        // set output card border
+        outputCardView.layer.borderWidth = 1
+        outputCardView.layer.borderColor = UIColor.tcHotPink.cgColor
+        
+        resetButton.layer.cornerRadius = 8
+        resetButton.layer.masksToBounds = true
+    }
     func calculate() {
         // dismiss keyboard
         if self.billAmountTextField.isFirstResponder {
